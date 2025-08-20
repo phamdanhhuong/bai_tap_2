@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Quản Lý Người Dùng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Quản Lý Người Dùng</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/home">Trang Chủ</a>
+                <a class="nav-link" href="/crud">CRUD</a>
+                <a class="nav-link" href="/get-crud">Danh Sách</a>
+                <a class="nav-link" href="/about">Giới Thiệu</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-users"></i> Chào Mừng Đến Với Hệ Thống Quản Lý Người Dùng
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Đây là trang chủ của hệ thống quản lý người dùng. Bạn có thể:</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-plus text-success"></i> 
+                                <a href="/crud" class="text-decoration-none">Tạo người dùng mới</a>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-list text-info"></i> 
+                                <a href="/get-crud" class="text-decoration-none">Xem danh sách người dùng</a>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-edit text-warning"></i> 
+                                Chỉnh sửa thông tin người dùng
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-trash text-danger"></i> 
+                                Xóa người dùng
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% if (typeof data !== 'undefined' && data) { %>
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Dữ Liệu Người Dùng (Debug)</h4>
+                    </div>
+                    <div class="card-body">
+                        <pre class="bg-light p-3 rounded"><%= data %></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</body>
+</html>

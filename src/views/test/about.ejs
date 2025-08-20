@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu - Quản Lý Người Dùng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 5px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Quản Lý Người Dùng</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/home">Trang Chủ</a>
+                <a class="nav-link" href="/crud">CRUD</a>
+                <a class="nav-link" href="/get-crud">Danh Sách</a>
+                <a class="nav-link active" href="/about">Giới Thiệu</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-info-circle"></i> Giới Thiệu
+                        </h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="mb-4">
+                            <img src="https://via.placeholder.com/150/007bff/ffffff?text=PDH" 
+                                 alt="Profile" class="profile-img rounded-circle mb-3">
+                        </div>
+                        
+                        <h4 class="text-primary mb-3">Phạm Danh Hưởng</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title">
+                                            <i class="fas fa-graduation-cap text-success"></i> Học Tập
+                                        </h6>
+                                        <p class="card-text">
+                                            Sinh viên năm 4<br>
+                                            Công Nghệ Phần Mềm Mới
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title">
+                                            <i class="fas fa-code text-warning"></i> Dự Án
+                                        </h6>
+                                        <p class="card-text">
+                                            Hệ thống quản lý người dùng<br>
+                                            Node.js + Express + Sequelize
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="fas fa-tools text-info"></i> Công Nghệ Sử Dụng
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fab fa-node-js text-success"></i> Node.js</li>
+                                            <li><i class="fas fa-server text-primary"></i> Express.js</li>
+                                            <li><i class="fas fa-database text-warning"></i> Sequelize ORM</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fab fa-html5 text-danger"></i> HTML5/EJS</li>
+                                            <li><i class="fab fa-bootstrap text-primary"></i> Bootstrap 5</li>
+                                            <li><i class="fab fa-js-square text-warning"></i> JavaScript ES6+</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <p class="mb-0 text-muted">
+                            <i class="fas fa-heart text-danger"></i> 
+                            Được phát triển với ❤️ cho môn Công Nghệ Phần Mềm Mới
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</body>
+</html>

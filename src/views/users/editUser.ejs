@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo Người Dùng Mới</title>
+    <title>Chỉnh Sửa Người Dùng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -28,7 +28,7 @@
             <a class="navbar-brand" href="#">Quản Lý Người Dùng</a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="/home">Trang Chủ</a>
-                <a class="nav-link active" href="/crud">CRUD</a>
+                <a class="nav-link" href="/crud">CRUD</a>
                 <a class="nav-link" href="/get-crud">Danh Sách</a>
                 <a class="nav-link" href="/about">Giới Thiệu</a>
             </div>
@@ -39,34 +39,16 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header bg-success text-white">
+                    <div class="card-header bg-warning text-dark">
                         <h3 class="card-title mb-0">
-                            <i class="fas fa-user-plus"></i> Tạo Người Dùng Mới
+                            <i class="fas fa-user-edit"></i> Chỉnh Sửa Người Dùng
                         </h3>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="/post-crud">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">
-                                            Email <span class="required">*</span>
-                                        </label>
-                                        <input type="email" class="form-control" id="email" 
-                                               name="email" required placeholder="Nhập địa chỉ email...">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">
-                                            Mật Khẩu <span class="required">*</span>
-                                        </label>
-                                        <input type="password" class="form-control" id="password" 
-                                               name="password" required placeholder="Nhập mật khẩu...">
-                                    </div>
-                                </div>
-                            </div>
-
+                        <% if (typeof data !== 'undefined' && data) { %>
+                        <form action="/put-crud" method="POST">
+                            <input type="hidden" name="id" value="<%= data.id %>">
+                            
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -74,7 +56,7 @@
                                             Tên <span class="required">*</span>
                                         </label>
                                         <input type="text" class="form-control" id="firstName" 
-                                               name="firstName" required placeholder="Nhập tên...">
+                                               name="firstName" value="<%= data.firstName %>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -83,15 +65,24 @@
                                             Họ <span class="required">*</span>
                                         </label>
                                         <input type="text" class="form-control" id="lastName" 
-                                               name="lastName" required placeholder="Nhập họ...">
+                                               name="lastName" value="<%= data.lastName %>" required>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    Email <span class="required">*</span>
+                                </label>
+                                <input type="email" class="form-control" id="email" 
+                                       name="email" value="<%= data.email %>" readonly>
+                                <small class="text-muted">Email không thể thay đổi</small>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="address" class="form-label">Địa Chỉ</label>
                                 <textarea class="form-control" id="address" name="address" 
-                                          rows="3" placeholder="Nhập địa chỉ..."></textarea>
+                                          rows="3" placeholder="Nhập địa chỉ..."><%= data.address || '' %></textarea>
                             </div>
 
                             <div class="row">
@@ -99,15 +90,16 @@
                                     <div class="mb-3">
                                         <label for="phoneNumber" class="form-label">Số Điện Thoại</label>
                                         <input type="tel" class="form-control" id="phoneNumber" 
-                                               name="phoneNumber" placeholder="Nhập số điện thoại...">
+                                               name="phoneNumber" value="<%= data.phoneNumber || '' %>"
+                                               placeholder="Nhập số điện thoại...">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="gender" class="form-label">Giới Tính</label>
                                         <select class="form-select" id="gender" name="gender">
-                                            <option value="1">Nam</option>
-                                            <option value="0">Nữ</option>
+                                            <option value="1" <%= (data.gender === true || data.gender === 1) ? 'selected' : '' %>>Nam</option>
+                                            <option value="0" <%= (data.gender === false || data.gender === 0) ? 'selected' : '' %>>Nữ</option>
                                         </select>
                                     </div>
                                 </div>
@@ -119,9 +111,9 @@
                                         <label for="roleId" class="form-label">Vai Trò</label>
                                         <select class="form-select" id="roleId" name="roleId">
                                             <option value="">Chọn vai trò...</option>
-                                            <option value="R1">Admin</option>
-                                            <option value="R2">Doctor</option>
-                                            <option value="R3">Patient</option>
+                                            <option value="R1" <%= data.roleId === 'R1' ? 'selected' : '' %>>Admin</option>
+                                            <option value="R2" <%= data.roleId === 'R2' ? 'selected' : '' %>>Doctor</option>
+                                            <option value="R3" <%= data.roleId === 'R3' ? 'selected' : '' %>>Patient</option>
                                         </select>
                                     </div>
                                 </div>
@@ -129,20 +121,30 @@
                                     <div class="mb-3">
                                         <label for="positionId" class="form-label">Vị Trí</label>
                                         <input type="text" class="form-control" id="positionId" 
-                                               name="positionId" placeholder="Nhập vị trí...">
+                                               name="positionId" value="<%= data.positionId || '' %>"
+                                               placeholder="Nhập vị trí...">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a href="/get-crud" class="btn btn-secondary me-md-2">
-                                    <i class="fas fa-list"></i> Xem Danh Sách
+                                    <i class="fas fa-arrow-left"></i> Quay Lại
                                 </a>
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save"></i> Tạo Người Dùng
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-save"></i> Cập Nhật
                                 </button>
                             </div>
                         </form>
+                        <% } else { %>
+                        <div class="text-center py-5">
+                            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                            <h5 class="text-muted">Không tìm thấy thông tin người dùng</h5>
+                            <a href="/get-crud" class="btn btn-primary">
+                                <i class="fas fa-arrow-left"></i> Quay Lại Danh Sách
+                            </a>
+                        </div>
+                        <% } %>
                     </div>
                 </div>
             </div>
