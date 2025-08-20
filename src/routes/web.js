@@ -1,5 +1,6 @@
-import express from 'express';
-import homeController from '../controllers/homeController.js';
+const express = require('express');
+const homeController = require('../controllers/homeController.js');
+const mongoController = require('../controllers/mongoController.js');
 
 const router = express.Router();
 
@@ -8,7 +9,8 @@ const initWebRoutes = (app) => {
     router.get('/', (req, res) => {
         return res.send('Pham Danh Huong');
     });
-    // Define routes
+    
+    // ====================== SEQUELIZE ROUTES ======================
     router.get('/home', homeController.getHomePage);
     router.get('/about', homeController.getAboutPage);
     router.get('/crud', homeController.getCRUD);
@@ -18,8 +20,19 @@ const initWebRoutes = (app) => {
     router.post('/put-crud', homeController.putCRUD);
     router.get('/delete-crud', homeController.deleteCRUD);
 
+    // ====================== MONGODB ROUTES ======================
+    router.get('/mongo', mongoController.getMongoHomePage);
+    router.get('/mongo/home', mongoController.getMongoHomePage);
+    router.get('/mongo/crud', mongoController.getMongoCRUD);
+    router.post('/mongo/post-crud', mongoController.postMongoCRUD);
+    router.get('/mongo/get-crud', mongoController.getMongoFindAllCrud);
+    router.get('/mongo/edit-crud', mongoController.getMongoEditCRUD);
+    router.post('/mongo/put-crud', mongoController.putMongoCRUD);
+    router.get('/mongo/delete-crud', mongoController.deleteMongoCRUD);
+    router.get('/mongo/search', mongoController.searchMongoCRUD);
+
     // Use the router in the app
     app.use('/', router);
 };
 
-export default initWebRoutes;
+module.exports = initWebRoutes;

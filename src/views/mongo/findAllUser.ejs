@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Người Dùng - MongoDB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: none;
+            border-radius: 15px;
+        }
+        .table th {
+            background-color: #13aa52;
+            color: white;
+            border: none;
+        }
+        .btn-action {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .mongo-green {
+            background-color: #13aa52;
+        }
+        .search-box {
+            border-radius: 25px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mongo-green">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-leaf"></i> MongoDB User Management
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/mongo/home">Trang Chủ</a>
+                <a class="nav-link" href="/mongo/crud">Tạo Mới</a>
+                <a class="nav-link active" href="/mongo/get-crud">Danh Sách</a>
+                <a class="nav-link" href="/home">SQL Version</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Alert Messages -->
+        <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle"></i> <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <% } %>
+        
+        <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> <%= successMessage %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <% } %>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header mongo-green text-white">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h3 class="card-title mb-0">
+                                    <i class="fas fa-database"></i> Danh Sách Người Dùng (MongoDB)
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- Search Form -->
+                                <form method="GET" action="/mongo/search" class="d-flex">
+                                    <input type="text" class="form-control search-box me-2" 
+                                           name="q" placeholder="Tìm kiếm email, tên, SĐT..." 
+                                           value="<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>">
+                                    <button type="submit" class="btn btn-light">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <% if (typeof datalist !== 'undefined' && datalist && datalist.length > 0) { %>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Email</th>
+                                            <th>Tên Đầy Đủ</th>
+                                            <th>Địa Chỉ</th>
+                                            <th>SĐT</th>
+                                            <th>Giới Tính</th>
+                                            <th>Vai Trò</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Hành Động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% datalist.forEach(function(user) { %>
+                                        <tr>
+                                            <td><code><%= user._id.toString().substring(0, 8) %>...</code></td>
+                                            <td><%= user.email %></td>
+                                            <td><%= user.firstName %> <%= user.lastName %></td>
+                                            <td>
+                                                <% if (user.address && user.address.trim()) { %>
+                                                    <%= user.address.length > 30 ? user.address.substring(0, 30) + '...' : user.address %>
+                                                <% } else { %>
+                                                    <span class="text-muted">N/A</span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <% if (user.phoneNumber) { %>
+                                                    <%= user.phoneNumber %>
+                                                <% } else { %>
+                                                    <span class="text-muted">N/A</span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <% if (user.gender === true || user.gender === 1) { %>
+                                                    <span class="badge bg-primary">
+                                                        <i class="fas fa-mars"></i> Nam
+                                                    </span>
+                                                <% } else { %>
+                                                    <span class="badge bg-info">
+                                                        <i class="fas fa-venus"></i> Nữ
+                                                    </span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <% if (user.roleId === 'R1') { %>
+                                                    <span class="badge bg-danger">Admin</span>
+                                                <% } else if (user.roleId === 'R2') { %>
+                                                    <span class="badge bg-warning">Doctor</span>
+                                                <% } else if (user.roleId === 'R3') { %>
+                                                    <span class="badge bg-success">Patient</span>
+                                                <% } else { %>
+                                                    <span class="badge bg-secondary">N/A</span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <% if (user.createdAt) { %>
+                                                    <small><%= new Date(user.createdAt).toLocaleDateString('vi-VN') %></small>
+                                                <% } else { %>
+                                                    <span class="text-muted">N/A</span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="/mongo/edit-crud?id=<%= user._id %>" 
+                                                       class="btn btn-warning btn-action" 
+                                                       title="Chỉnh sửa">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" 
+                                                            class="btn btn-danger btn-action" 
+                                                            title="Xóa"
+                                                            onclick="deleteUser('<%= user._id %>', '<%= user.email %>')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <div class="text-center py-5">
+                                <i class="fas fa-database fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">
+                                    <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+                                        Không tìm thấy kết quả cho "<%= searchTerm %>"
+                                    <% } else { %>
+                                        Không có người dùng nào trong MongoDB
+                                    <% } %>
+                                </h5>
+                                <p class="text-muted">
+                                    <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+                                        Thử tìm kiếm với từ khóa khác hoặc 
+                                        <a href="/mongo/get-crud" class="text-decoration-none">xem tất cả</a>
+                                    <% } else { %>
+                                        Hãy thêm người dùng mới để bắt đầu.
+                                    <% } %>
+                                </p>
+                                <a href="/mongo/crud" class="btn mongo-green text-white">
+                                    <i class="fas fa-plus"></i> Thêm Người Dùng Mới
+                                </a>
+                            </div>
+                        <% } %>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-database"></i> 
+                                Tổng số: <%= typeof datalist !== 'undefined' && datalist ? datalist.length : 0 %> người dùng
+                                <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+                                    (kết quả tìm kiếm cho "<%= searchTerm %>")
+                                <% } %>
+                            </small>
+                            <div>
+                                <a href="/mongo/crud" class="btn btn-success btn-sm">
+                                    <i class="fas fa-plus"></i> Thêm Mới
+                                </a>
+                                <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+                                    <a href="/mongo/get-crud" class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-list"></i> Xem Tất Cả
+                                    </a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        async function deleteUser(userId, userEmail) {
+            const result = await Swal.fire({
+                title: 'Xác nhận xóa?',
+                text: `Bạn có chắc chắn muốn xóa người dùng "${userEmail}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy',
+                background: '#fff',
+                backdrop: true
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`/mongo/delete-crud?id=${userId}`, {
+                        method: 'GET'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        await Swal.fire({
+                            title: 'Đã xóa!',
+                            text: data.message,
+                            icon: 'success',
+                            confirmButtonColor: '#13aa52'
+                        });
+                        
+                        // Reload page to update the list
+                        window.location.reload();
+                    } else {
+                        await Swal.fire({
+                            title: 'Lỗi!',
+                            text: data.message,
+                            icon: 'error',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    await Swal.fire({
+                        title: 'Lỗi!',
+                        text: 'Có lỗi xảy ra khi xóa người dùng.',
+                        icon: 'error',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

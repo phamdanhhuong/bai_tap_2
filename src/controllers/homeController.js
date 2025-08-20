@@ -1,5 +1,5 @@
-import db from "../models";
-import CRUDService from "../services/CRUDService";
+const db = require("../models");
+const CRUDService = require("../services/CRUDService");
 
 const getHomePage = async (req, res) => {
     try {
@@ -75,7 +75,7 @@ const deleteCRUD = async (req, res) => {
     }
 };
 
-export default {
+module.exports = {
     getHomePage,
     getAboutPage,
     getCRUD,

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Người Dùng Mới - MongoDB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: none;
+            border-radius: 15px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .required {
+            color: #dc3545;
+        }
+        .mongo-green {
+            background-color: #13aa52;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mongo-green">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-leaf"></i> MongoDB User Management
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/mongo/home">Trang Chủ</a>
+                <a class="nav-link active" href="/mongo/crud">Tạo Mới</a>
+                <a class="nav-link" href="/mongo/get-crud">Danh Sách</a>
+                <a class="nav-link" href="/home">SQL Version</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header mongo-green text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-user-plus"></i> Tạo Người Dùng Mới (MongoDB)
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> 
+                            Dữ liệu sẽ được lưu vào MongoDB với authentication admin:123456
+                        </div>
+
+                        <form id="mongoUserForm" method="POST" action="/mongo/post-crud">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">
+                                            Email <span class="required">*</span>
+                                        </label>
+                                        <input type="email" class="form-control" id="email" 
+                                               name="email" required placeholder="Nhập địa chỉ email...">
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập email hợp lệ
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">
+                                            Mật Khẩu <span class="required">*</span>
+                                        </label>
+                                        <input type="password" class="form-control" id="password" 
+                                               name="password" required placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)..."
+                                               minlength="6">
+                                        <div class="invalid-feedback">
+                                            Mật khẩu phải có ít nhất 6 ký tự
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="firstName" class="form-label">
+                                            Tên <span class="required">*</span>
+                                        </label>
+                                        <input type="text" class="form-control" id="firstName" 
+                                               name="firstName" required placeholder="Nhập tên..."
+                                               maxlength="50">
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập tên
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="lastName" class="form-label">
+                                            Họ <span class="required">*</span>
+                                        </label>
+                                        <input type="text" class="form-control" id="lastName" 
+                                               name="lastName" required placeholder="Nhập họ..."
+                                               maxlength="50">
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập họ
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa Chỉ</label>
+                                <textarea class="form-control" id="address" name="address" 
+                                          rows="3" placeholder="Nhập địa chỉ..." maxlength="200"></textarea>
+                                <div class="form-text">Tối đa 200 ký tự</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="phoneNumber" class="form-label">Số Điện Thoại</label>
+                                        <input type="tel" class="form-control" id="phoneNumber" 
+                                               name="phoneNumber" placeholder="Nhập số điện thoại..."
+                                               pattern="[\+]?[\d\s\-\(\)]{10,15}">
+                                        <div class="form-text">Ví dụ: +84 123 456 789 hoặc 0123456789</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="gender" class="form-label">Giới Tính</label>
+                                        <select class="form-select" id="gender" name="gender">
+                                            <option value="1">Nam</option>
+                                            <option value="0">Nữ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="roleId" class="form-label">Vai Trò</label>
+                                        <select class="form-select" id="roleId" name="roleId">
+                                            <option value="R3">Patient (Bệnh nhân)</option>
+                                            <option value="R2">Doctor (Bác sĩ)</option>
+                                            <option value="R1">Admin (Quản trị viên)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="positionId" class="form-label">Vị Trí</label>
+                                        <input type="text" class="form-control" id="positionId" 
+                                               name="positionId" placeholder="Nhập vị trí công việc...">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/mongo/get-crud" class="btn btn-secondary me-md-2">
+                                    <i class="fas fa-list"></i> Xem Danh Sách
+                                </a>
+                                <button type="submit" class="btn mongo-green text-white">
+                                    <i class="fas fa-save"></i> Tạo Người Dùng
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" id="modalHeader">
+                    <h5 class="modal-title" id="modalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="viewListBtn" style="display:none;">
+                        Xem Danh Sách
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    
+    <script>
+        document.getElementById('mongoUserForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Convert FormData to JSON object
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tạo...';
+            
+            try {
+                const response = await fetch('/mongo/post-crud', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(jsonData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Success
+                    document.getElementById('modalHeader').className = 'modal-header bg-success text-white';
+                    document.getElementById('modalTitle').textContent = 'Thành Công!';
+                    document.getElementById('modalBody').innerHTML = 
+                        '<i class="fas fa-check-circle text-success"></i> ' + result.message;
+                    document.getElementById('viewListBtn').style.display = 'inline-block';
+                    document.getElementById('viewListBtn').onclick = () => {
+                        window.location.href = '/mongo/get-crud';
+                    };
+                    
+                    // Reset form
+                    this.reset();
+                } else {
+                    // Error
+                    document.getElementById('modalHeader').className = 'modal-header bg-danger text-white';
+                    document.getElementById('modalTitle').textContent = 'Lỗi!';
+                    document.getElementById('modalBody').innerHTML = 
+                        '<i class="fas fa-exclamation-triangle text-danger"></i> ' + result.message;
+                    document.getElementById('viewListBtn').style.display = 'none';
+                }
+                
+                new bootstrap.Modal(document.getElementById('resultModal')).show();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('modalHeader').className = 'modal-header bg-danger text-white';
+                document.getElementById('modalTitle').textContent = 'Lỗi!';
+                document.getElementById('modalBody').innerHTML = 
+                    '<i class="fas fa-exclamation-triangle text-danger"></i> Có lỗi xảy ra khi tạo người dùng.';
+                document.getElementById('viewListBtn').style.display = 'none';
+                new bootstrap.Modal(document.getElementById('resultModal')).show();
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+    </script>
+</body>
+</html>

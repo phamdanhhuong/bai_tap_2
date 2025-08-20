@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt';
-import db from '../models/index.js';
+const bcrypt = require('bcrypt');
+const db = require('../models/index.js');
 
 const salt = bcrypt.genSaltSync(10);
 const createNewUser = async (data) => {
@@ -97,7 +97,7 @@ const deleteUser = (userId) => {
     });
 };
 
-export default {
+module.exports = {
     createNewUser,
     getAllUsers,
     getUserInfoById,

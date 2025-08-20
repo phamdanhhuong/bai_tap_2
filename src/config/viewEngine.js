@@ -1,4 +1,4 @@
-import express from "express"; // cú pháp ES6
+const express = require("express"); // cú pháp CommonJS
 
 let configViewEngine = (app) => {
   app.use(express.static("./src/public")); // Thiết lập thư mục tĩnh (images, css,..)
@@ -6,5 +6,5 @@ let configViewEngine = (app) => {
   app.set("views", "./src/views"); // Thư mục chứa views
 };
 
-export default configViewEngine; // xuất hàm ra
+module.exports = configViewEngine; // xuất hàm ra
 

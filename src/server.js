@@ -1,8 +1,9 @@
-import express from "express";
-import configViewEngine from "./config/viewEngine.js";
-import bodyParser from "body-parser";
-import initWebRoutes from "./routes/web.js";
-import connectDB from "./config/configdb.js";
+const express = require("express");
+const configViewEngine = require("./config/viewEngine.js");
+const bodyParser = require("body-parser");
+const initWebRoutes = require("./routes/web.js");
+const connectDB = require("./config/configdb.js");
+const connectMongoDB = require("./config/mongodb.js");
 require('dotenv').config();
 
 const app = express();
@@ -18,8 +19,12 @@ configViewEngine(app);
 // Initialize web routes
 initWebRoutes(app);
 
-connectDB();
+// Connect to databases
+connectDB(); // Sequelize
+connectMongoDB(); // MongoDB
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`🚀 Server is running on http://localhost:${port}`);
+  console.log(`📊 SQL Routes: http://localhost:${port}/home`);
+  console.log(`🍃 MongoDB Routes: http://localhost:${port}/mongo`);
 });
